@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="common/base::layout(~{::section},${user})">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+  </head>
+  <body>
+ 
+    <section class="content">
+    
+    <div class="container">
+     <div class="row">
+     <div class="col-md-8 offset-md-2">
+     <div class="my-card my-form">
+  <!--  <div class="alert" th:if="${session.message}" th:classappend="${session.message.type}" role="alert">
+ 		<p class="text-center" th:text="${session.message.content}">
+ 		<th:block th:text="${session.removeAttributes('message')}"></th:block>
+	</div> --> 
+	 <div class="alert" th:if="${session.message}" th:classappend="${'alert-'+session.message.type}" role="alert">
+ 		<p class="text-center" th:text="${session.message.content}">
+ 	<!-- this is not working due to version -->	<th:block th:text="${session.removeAttribute('message')}"></th:block>  
+	</div>
+    <h2 class="text-center">Add Contact</h2>
+    <form  method="post" th:action="@{added}" th:object="${contact}" enctype="multipart/form-data">
+      <div class="form-group m-2">
+        <label for="name">First Name:</label>
+        <input type="text" class="form-control"  id="name" name="name" th:value="${contact.getName()}" placeholder="Enter your first name" th:classappend="${#fields.hasErrors('name')} ? 'is-invalid':' '">
+        <div th:if="${#fields.hasErrors('name')}" class="invalid-feedback">
+                    <span th:each="err : ${#fields.errors('name')}" th:text="${err}">Error</span>
+                </div>
+      </div>
+      <div class="form-group m-2">
+        <label for="secondName">Second Name</label>
+        <input type="text" class="form-control" id="secondName" name="secondName" th:value="${contact.getSecondName()}" placeholder="Enter your second name" >
+      </div>
+      <div class="form-group m-2">
+        <label for="work">Work</label>
+        <input type="text" class="form-control" id="work" name="work" th:value="${contact.getWork()}" placeholder="Enter work" >
+      </div>
+      <div class="form-group m-2">
+        <label for="email">Email address</label>
+        <input type="email" class="form-control" id="email"  name="email" th:value="${contact.getEmail()}" placeholder="Enter email" th:classappend="${#fields.hasErrors('email')} ? 'is-invalid':' '">
+      	<div th:if="${#fields.hasErrors('email')}" class="invalid-feedback">
+                    <span th:each="err : ${#fields.errors('email')}" th:text="${err}">Error</span>
+                </div>
+      </div>
+      <div class="form-group m-2">
+        <label for="phone">Phone Number:</label>
+        <input type="text" class="form-control" id="phone" name="phone" th:value="${contact.getPhone()}" placeholder="Enter phone" th:classappend="${#fields.hasErrors('phone')} ? 'is-invalid':' '">
+      	<div th:if="${#fields.hasErrors('phone')}" class="invalid-feedback">
+                    <span th:each="err : ${#fields.errors('phone')}" th:text="${err}">Error</span>
+                </div>
+      </div>
+      <div class="form-group m-2">
+        <label for="description">Description</label>
+        <textarea class="form-control" id="description" rows="6" name="description" th:text="${contact.getDescription()}" placeholder="wrie discription here"></textarea>
+      
+      </div>
+              <input type="file" class="form-control w-50 mt-2" id="imagefile" name="imagefile">
+      <div class="text-center gap-5">
+      <button type="submit" class="btn bg-primary mt-4">Add Contact</button>
+      </div>
+    </form>
+     </div>
+     </div>
+     </div>
+  </div>
+  <script type="text/javascript">
+	let links=document.querySelector(".my-link");
+	links.classList.remove("active")
+	document.querySelector("#add-link").classList.add("active")
+	
+	</script>
+    </section>
+  </body>
+</html>

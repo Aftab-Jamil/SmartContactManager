@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="base::layout(~{::section})">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+  </head>
+  <body>
+    <section>
+     <div class="container">
+     <div class="row">
+     <div class="col-md-8 offset-md-2">
+     <div class="my-card my-form">
+    <div class="alert" th:if="${session.message}" th:classappend="${session.message.type}" role="alert">
+ 		<p class="text-center" th:text="${session.message.content}">
+ 		<th:block th:text="${session.removeAttributes('message')}"></th:block>
+	</div>
+	
+    <h2 class="text-center">Registration Form</h2>
+    <form th:action="@{/success}" th:object="${user}" th:method="post" >
+      <div class="form-group m-2">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" th:value="${user.name}" id="name" name="name" placeholder="Enter your name" th:classappend="${#fields.hasErrors('name')} ? 'is-invalid':' '">
+        <div th:if="${#fields.hasErrors('name')}" class="invalid-feedback">
+                    <span th:each="err : ${#fields.errors('name')}" th:text="${err}">Error</span>
+                </div>
+      </div>
+      <div class="form-group m-2">
+        <label for="email">Email address</label>
+        <input type="email" class="form-control" id="email" th:value="${user.email}" name="email" placeholder="Enter your email" th:classappend="${#fields.hasErrors('email')} ? 'is-invalid':' '">
+      	<div th:if="${#fields.hasErrors('name')}" class="invalid-feedback">
+                    <span th:each="err : ${#fields.errors('email')}" th:text="${err}">Error</span>
+                </div>
+      </div>
+      <div class="form-group m-2">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" th:classappend="${#fields.hasErrors('password')} ? 'is-invalid':' '">
+      	<div th:if="${#fields.hasErrors('password')}" class="invalid-feedback">
+                    <span th:each="err : ${#fields.errors('password')}" th:text="${err}">Error</span>
+                </div>
+      </div>
+      <div class="form-group m-2">
+        <label for="about">About</label>
+        <textarea class="form-control" id="about" rows="6" name="about" th:text="${user.about}" placeholder="Tell us about yourself" th:classappend="${#fields.hasErrors('about')} ? 'is-invalid':' '"></textarea>
+      	<div th:if="${#fields.hasErrors('name')}" class="invalid-feedback">
+                    <span th:each="err : ${#fields.errors('about')}" th:text="${err}">Error</span>
+                </div>
+      </div>
+      <div class="form-check m-2">
+  <input class="form-check-input" type="checkbox" value="true" name="agreement" id="agreement">
+  <label class="form-check-label" for="agreement">
+    Agree terms and conditions !
+  </label>
+</div>
+      <div class="text-center gap-5">
+      <button type="submit" class="btn bg-primary">Register</button>
+      <button type="reset" class="btn bg-primary">Reset</button>
+      </div>
+    </form>
+    <div class="text-center mt-2">
+      	<span>Already a member?</span>
+  		<a th:href="@{signin}" style="text-decoration: none;">Login</a>
+  		</div>
+     </div>
+     </div>
+     </div>
+  </div>
+   <script type="text/javascript">
+	let links=document.querySelector(".my-link");
+	links.classList.remove("active");
+	document.querySelector("#signup-link").classList.add("link-active");
+	</script>
+    </section>
+  </body>
+</html>

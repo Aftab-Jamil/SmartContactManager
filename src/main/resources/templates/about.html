@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="base::layout(~{::section})">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+  </head>
+  <body>
+    <section>
+     <h3>hello this is about page</h3>
+     <p th:text="'this is '+${user}">
+      <script type="text/javascript">
+	let links=document.querySelector(".my-link");
+	links.classList.remove("active");
+	document.querySelector("#about-link").classList.add("link-active");
+	</script>
+    </section>
+  </body>
+</html>

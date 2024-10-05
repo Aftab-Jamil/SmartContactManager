@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="base::layout(~{::section})">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+  </head>
+  <body>
+    <section class="banner d-flex justify-content-center align-items-center">
+    <div class="text-center">
+    	<p th:text="'hello '+${user.getName()}"></p>
+     </div>
+    </section>
+  </body>
+</html>

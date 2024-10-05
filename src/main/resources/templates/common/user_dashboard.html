@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="common/base::layout(~{::section},${user})">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+  </head>
+  <body>
+    <section class="content">
+    <div class="container bg-secondary rounded p-10">
+     		<div class="profile_picture d-flex align-items-center flex-column">
+     				<img style="height: 100px; width: 100px;" class="my_profile_photo mt-10 " alt="N/A" th:src="@{${user.imageUrl}}"> 
+      		<span  th:text="${user.name}" class="fs-4"></span>
+     		</div>
+     		<table class="table table-success table-striped mt-10" style="margin-top: 15px;">
+</table>
+
+<h4 th:text="'welcome '+${user.name}+' to Smart Contact Manager, Here You Can Manage your contact smartly'"></h4>
+<a type="button" class="btn btn-primary mt-3 mb-4" style="width: 100%" th:href="@{/user/add_contact}">Start Adding Contact...</a>
+
+
+		<!-- payment fields for donation -->
+		
+		<h3>Donate Us</h3>
+		<div class="form-group">
+			<label for="amount">Amount:</label>
+        	<input type="text" class="form-control"  id="amount" name="amount" placeholder="Enter amount to donate">
+  	     </div>
+		<button onclick="paymentStarting()" class="btn btn-success mt-3" style="width: 100%">Pay <span id="payAmount"></span> </button>
+	
+</div>
+
+
+	
+	<script type="text/javascript">
+	let links=document.querySelector(".my-link");
+	links.classList.remove("active");
+	document.querySelector("#home-link").classList.add("active");
+	document.querySelector("#home").classList.add("link-active");
+	// ye button pe amount ko update karne ke liye hai jo user pay karega
+	const amountInput = document.getElementById('amount');
+    const payAmount = document.getElementById('payAmount');
+
+            // Update the button text when the amount changes
+            amountInput.addEventListener('input', function() {
+                payAmount.textContent = amountInput.value;
+            });
+	// method to initiate to send information about payment like amount or any other information in json floatformat
+	const paymentStarting= async()=>{
+		console.log("payment start ho raha hai");
+		if(amountInput.value=="" || amountInput.value==null){
+			alert("you dont have entered any amount \nplease enter amount in input")
+			return;
+		}
+	/*	const response= await fetch("/user/payment", {
+			type: 'POST',
+			contentType: 'application/json',
+			data: JSON.stringify({ amount: amount,info:"donation for smart contact manager" }),
+			dataType: 'json'
+		})
+		if(!response.ok){
+			console.log("Error is occured")
+		}
+	*/	
+	
+	try {
+		const response = await fetch('/user/create_order', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({ amount: amountInput.value,info:'this is Donated amount by you' })
+		});
+
+		if (!response.ok) {
+			throw new Error('Network response was not ok');
+		}
+
+		const result = await response.json();
+		if(result.status=='created'){
+			var options = {
+				"key": "rzp_test_bz6KxeRkMV1MiJ", // Enter the Key ID generated from the Dashboard
+				"amount": result.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+				"currency": "INR",
+				"name": "Smart Contact Manager",
+				"description": "Donation",
+				"image": "C:\Users\dell\Desktop\Scmlogo.jpeg",
+				"order_id": result.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+				"handler": function (response){
+					console.log(response.razorpay_payment_id);
+					console.log(response.razorpay_order_id);
+					console.log(response.razorpay_signature);
+					updataPaymentStatus(response.razorpay_payment_id,response.razorpay_order_id,"paid");
+				},
+				"prefill": {
+					"name": "",
+					"email": "",
+					"contact": ""
+				},
+				"notes": {
+					"address": "Razorpay Corporate Office"
+				},
+				"theme": {
+					"color": "#3399cc"
+				}
+			};
+			var rzp1 = new Razorpay(options);
+rzp1.on('payment.failed', function (response){
+        console.log(response.error.code);
+        console.log(response.error.description);
+        console.log(response.error.source);
+        console.log(response.error.step);
+        console.log(response.error.reason);
+        console.log(response.error.metadata.order_id);
+        console.log(response.error.metadata.payment_id);
+});
+ rzp1.open();
+		}
+	} catch (error) {
+		console.error('There was a problem with the fetch operation:', error);
+	}
+	}
+	const updataPaymentStatus=async (paymentId,orderId,status)=>{
+		const response = await fetch('/user/updatestatus', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({paymentId:paymentId,orderId:orderId,status:status})
+		}
+		)
+	}
+	</script>
+    </section>
+  </body>
+</html>

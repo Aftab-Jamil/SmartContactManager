@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="base::layout(~{::section})">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+  </head>
+  <body>
+    <section>
+       <!-- email verification  box -->
+  <div class="container height-100 d-flex justify-content-center align-items-center">
+    <div class="position-relative">
+        <div class="card p-2 text-center">
+        <div class="alert alert-success" > <span>A OTP has been sent to</span> <small th:text="${user.getEmail()}"></small> </div>
+            <h6>Please enter OTP <br> to verify your account</h6>
+            <form th:action="@{otpverification}" th:method="post">
+            <div id="otp" class="inputs d-flex flex-row justify-content-center mt-2">
+            <input type="text" name="otp" id="otp" placeholder="Enter OTP here">
+            </div>
+            <div class="mt-4"> <button type="submit" class="btn btn-danger px-4 validate">Validate</button> </div>
+            </form>
+        </div>
+    </div>
+</div>
+ 
+    </section>
+  </body>
+</html>

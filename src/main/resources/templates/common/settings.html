@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="common/base::layout(~{::section},${user})">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+  </head>
+  <body>
+    <section class="content">
+        <div class="container bg-white rounded p-10 text-dark">
+        <div class="alert" th:if="${session.message}" th:classappend="${session.message.type}" role="alert">
+ 		<p class="text-center" th:text="${session.message.content}">
+ 		<th:block th:text="${session.removeAttributes('message')}"></th:block>
+	</div>
+    <h3 class="text-center">Change password</h3>
+    <form  method="post" th:action="@{changepassword}" th:object="${changePassword}">
+      <div class="form-group m-2">
+        <label for="old_password">Old Password:</label>
+        <input type="text" class="form-control"  id="old_password"  name="old_password" placeholder="Enter old password" th:classappend="${#fields.hasErrors('old_password')} ? 'is-invalid':' '">
+        <div th:if="${#fields.hasErrors('old_password')}" class="invalid-feedback">
+                    <span th:each="err : ${#fields.errors('old_password')}" th:text="${err}">Error</span>
+                </div>
+      </div>
+      <div class="form-group m-2">
+        <label for="new_password">New Password:</label>
+        <input type="text" class="form-control"  id="new_password" name="new_password" placeholder="Enter new password" th:classappend="${#fields.hasErrors('new_password')} ? 'is-invalid':' '">
+     	<div th:if="${#fields.hasErrors('new_password')}" class="invalid-feedback">
+                    <span th:each="err : ${#fields.errors('new_password')}" th:text="${err}">Error</span>
+                </div>
+      </div>
+      <div class="form-group m-2">
+        <label for="confirm_password">confirm Password:</label>
+        <input type="text" class="form-control"  id="confirm_password" name="confirm_password" placeholder="Enter confirm password" th:classappend="${#fields.hasErrors('confirm_password')} ? 'is-invalid':' '">
+      	<div th:if="${#fields.hasErrors('confirm_password')}" class="invalid-feedback">
+                    <span th:each="err : ${#fields.errors('confirm_password')}" th:text="${err}">Error</span>
+                </div>
+      </div>
+      <div class="text-center gap-5">
+      <button type="submit" class="btn bg-primary mt-4">change password</button>
+      </div>
+      </form>
+    </div>
+	
+	<script type="text/javascript">
+	let links=document.querySelector(".my-link");
+	links.classList.remove("active");
+	document.querySelector("#setting-link").classList.add("active");
+	</script>
+    </section>
+  </body>
+</html>

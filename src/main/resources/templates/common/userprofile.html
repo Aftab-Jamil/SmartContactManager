@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="common/base::layout(~{::section},${user})">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+  </head>
+  <body>
+    <section class="content">
+<div class="container bg-secondary rounded p-10">
+     		<div class="profile_picture d-flex align-items-center flex-column">
+     				<img style="height: 100px; width: 100px;" class="my_profile_photo mt-10 " alt="N/A" th:src="@{${user.imageUrl}}"> 
+      		<span  th:text="${user.name}" class="fs-4"></span>
+     		</div>
+     		<table class="table table-success table-striped mt-10" style="margin-top: 15px;">
+ 
+  <tbody>
+    <tr>
+      <th scope="row">User Id:</th>
+      <td th:text="${user.id}"></td>
+      
+    </tr>
+     <tr>
+      <th scope="row">Email:</th>
+      <td th:text="${user.email}"></td>
+      
+    </tr>
+     <tr>
+      <th scope="row">Role:</th>
+      <td th:text="${user.role}"></td>
+      
+    </tr>
+     <tr>
+      <th scope="row">Status:</th>
+      <td th:if="${user.enabled}"><button class="btn btn-sm btn-success disabled">Active</button></td>
+      <td th:unless="${user.enabled}"><button class="btn btn-sm btn-danger disabled">Not Active</button></td>
+    </tr>
+      
+  </tbody>
+</table>
+
+	<h3>About:</h3>
+	<span th:utext="${user.about}"></span>
+	  <form th:action="@{'/user/updateuser'}" th:method="post" class="text-center">
+      <button type="submit" class="btn btn-success">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
+  <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001m-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708z"></path>
+				</svg>Edit
+     </button></form>
+	</div>
+	<script type="text/javascript">
+	let links=document.querySelector(".my-link");
+	links.classList.remove("active")
+	document.querySelector("#profile-link").classList.add("active")
+	
+	</script>
+</section>
+  </body>
+</html>
